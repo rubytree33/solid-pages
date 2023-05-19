@@ -52,13 +52,17 @@ $shadow: rgba(black, $opacity);
 }
 
 .texture1 {
-  $x: stripe-stops(
-    transparent 1px,
-    $highlight 2px,
-    transparent 3px,
-    $shadow 4px);
-  @debug $x;
-  background: repeating-linear-gradient(-45deg, $x...), $shadow;
+  $x: stripe-stops(transparent 2px, $highlight 4px);
+  // background: repeating-linear-gradient(-45deg, $x...), $shadow;
+  $y:
+    radial-gradient(stripe-stops($shadow 100%/2, transparent 100%)),
+    ;
+  @debug $y;
+  background-image: $y;
+  background-repeat: repeat repeat;
+  background-size: 3px 3px;
+  background-color: transparent;
+  backdrop-filter: blur(10px);
 }
 
 button {
