@@ -1,3 +1,5 @@
+@use 'sass:list';
+
 .App {
   text-align: center;
 }
@@ -37,16 +39,28 @@ $opacity: 20%;
 $highlight: rgba(white, $opacity);
 $shadow: rgba(black, $opacity);
 
-.texture1 {
-  background:
-    repeating-linear-gradient(-45deg,
-      transparent, transparent 1px,
-      $highlight 1px, $highlight 2px,
-      transparent 2px, transparent 3px,
-      $shadow 3px, $shadow 4px,
-      ),
-    $shadow;
+@function stripe-stops($pairs...) {
+  $result: ();
+  $last: 0px;
+  @each $pair in $pairs {
+    $color: list.nth($pair, 1);
+    $stop: list.nth($pair, 2);
+    $result: list.join($result, [$color $last, $color $stop]);
+    $last: $stop;
+  }
+  @return $result;
 }
+
+.texture1 {
+  $x: stripe-stops(
+    transparent 1px,
+    $highlight 2px,
+    transparent 3px,
+    $shadow 4px);
+  @debug $x;
+  background: repeating-linear-gradient(-45deg, $x...), $shadow;
+}
+
 button {
   $xpad: .8em;
   $ypad: .6em;
