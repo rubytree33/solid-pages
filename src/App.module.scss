@@ -1,5 +1,21 @@
 @use 'sass:list';
 
+$opacity: 25%;
+$highlight: rgba(white, $opacity);
+$shadow: rgba(black, $opacity);
+
+@function stripe-stops($pairs...) {
+  $result: ();
+  $last: 0px;
+  @each $pair in $pairs {
+    $color: list.nth($pair, 1);
+    $stop: list.nth($pair, 2);
+    $result: list.join($result, [$color $last, $color $stop]);
+    $last: $stop;
+  }
+  @return $result;
+}
+
 .App {
   text-align: center;
 }
@@ -21,7 +37,8 @@
 
 .header {
   // background-color: #282c34;
-  background-color: #845;
+  // background-color: #845;
+  background-image: repeating-linear-gradient(45deg, stripe-stops(#734 16px, #845 32px));
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -35,34 +52,18 @@
   color: #b318f0;
 }
 
-$opacity: 20%;
-$highlight: rgba(white, $opacity);
-$shadow: rgba(black, $opacity);
-
-@function stripe-stops($pairs...) {
-  $result: ();
-  $last: 0px;
-  @each $pair in $pairs {
-    $color: list.nth($pair, 1);
-    $stop: list.nth($pair, 2);
-    $result: list.join($result, [$color $last, $color $stop]);
-    $last: $stop;
-  }
-  @return $result;
-}
-
 .texture1 {
-  $x: stripe-stops(transparent 2px, $highlight 4px);
-  // background: repeating-linear-gradient(-45deg, $x...), $shadow;
-  $y:
-    radial-gradient(stripe-stops($shadow 100%/2, transparent 100%)),
-    ;
-  @debug $y;
-  background-image: $y;
-  background-repeat: repeat repeat;
-  background-size: 3px 3px;
+  // background-image: radial-gradient(stripe-stops($shadow 50%, transparent 100%));
+  // background-repeat: repeat repeat;
+  // background-size: 3px 3px;
+  background-image: repeating-linear-gradient(-45deg, stripe-stops($shadow 2px, transparent 5px));
   background-color: transparent;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(6px);
+  border-color: $shadow;
+  border-style: none;
+  &:active {
+    transform: translateY(1px);
+  }
 }
 
 button {
